@@ -1,3 +1,7 @@
+body {
+  background-color: white;
+}
+
 .local-fixed-header {
   position: fixed;
   top: 0;
@@ -16,13 +20,10 @@
   top: 0;
 }
 
-#local-row {
+.row {
   background-color: rgba(255, 255, 255, 0.85);
   position: relative;
   z-index: 1; /* puts in front of background div */
-}
-
-.local-title {
 }
 
 .local-about-member div {
@@ -50,4 +51,52 @@
 /* probably specific enough (job title)*/
 .local-about-member h4 {
   color: #708090;
+}
+
+.link-div {
+  background-color: white; 
+  border-radius: 5px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.link-div:hover {
+  background-color: lightgrey;
+  transition: 0.3s;
+}
+
+
+.link-div a {
+  color: black;
+  text-decoration: none;
+}
+
+.link-div a:hover {
+  color: black;
+}
+
+.link-div a:visited {
+  text-decoration: none;
+}
+
+.doc-link div {
+  display: inline-block;
+}
+
+.doc-link-img {
+  padding: 10px;
+}
+
+.doc-link-img img {
+  height: 100px;
+  width: 100px;
+}
+
+.doc-link-text {
+  vertical-align: middle;
+  width: 860px;
+  height:100%;
+  padding: 10px;
 }
