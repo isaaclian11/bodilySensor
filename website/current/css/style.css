@@ -58,8 +58,7 @@ body {
   border-radius: 5px;
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 20px;
 }
 
 .link-div:hover {
@@ -99,4 +98,8 @@ body {
   width: 860px;
   height:100%;
   padding: 10px;
+}
+
+.doc-link-text h4 {
+  color: #708090;
 }
