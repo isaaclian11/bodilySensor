@@ -1,0 +1,53 @@
+.local-fixed-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+/* figure out a way to make more responsive */
+.local-main {
+  margin-top: 185px; /* height of local-fixed-header */
+  /* margin: 185px 200px 100px 200px; */
+}
+
+#particles-js canvas {
+  position: fixed;
+  top: 0;
+}
+
+#local-row {
+  background-color: rgba(255, 255, 255, 0.85);
+  position: relative;
+  z-index: 1; /* puts in front of background div */
+}
+
+.local-title {
+}
+
+.local-about-member div {
+  display: inline-block;
+}
+
+.local-about-member-image {
+  padding: 20px;
+}
+
+.local-about-member-image img {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+
+/* add responsive css later */
+.local-about-member-text {
+  vertical-align: middle;
+  width: 860px;
+  height:100%;
+  padding: 20px;
+}
+
+/* probably specific enough (job title)*/
+.local-about-member h4 {
+  color: #708090;
+}

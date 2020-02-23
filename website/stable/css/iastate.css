@@ -25,11 +25,11 @@ details,
 figcaption,
 figure,
 footer,
-header,
 hgroup,
 main,
-menu,
+header,
 nav,
+menu,
 section,
 summary {
   display: block;
