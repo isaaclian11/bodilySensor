@@ -1,0 +1,7 @@
+# C - Embedded ignore
+# Object files
+*.o
+./embedded/src/obj
+
+# Error logs
+*.log
