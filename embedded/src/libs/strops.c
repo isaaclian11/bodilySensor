@@ -2,21 +2,11 @@
 #include <string.h>
 #include "strops.h"
 
-// must free result after return
-char* concat(char* str1, char* str2) {
-  int result_length = strlen(str1) + strlen(str2);
-  char *result = malloc(result_length);
+void str_deep_copy(char *str1, char *str2) {
+  char tmparr[strlen(str2)];
+  strcpy(tmparr, str2);
+  free(str2);
+  str1 = tmparr;
 
-  strncpy(result, str1, sizeof(result));
-  strncat(result, str2, (sizeof(result) - strlen(result)));
-
-  return result;
-}
-
-// must free result after return
-char* insert(char *str1, int index, char *str2) {
-  int result_length = strlen(str1) + strlen(str2);
-  char *result = malloc(result_length);
-
-
+  return;
 }

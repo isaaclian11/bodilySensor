@@ -26,7 +26,11 @@ clean:
 
 memtest:
 	rm $(MEMLOG)
-	valgrind ./main &> $(MEMLOG)
+	valgrind -s --leak-check=full --track-origins=yes ./main &> $(MEMLOG)
+
+leaktest:
+	rm $(MEMLOG)
+	valgrind --leak-check=full ./main &> $(MEMLOG)
 
 run:
 	./main

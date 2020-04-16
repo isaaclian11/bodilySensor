@@ -1,16 +1,25 @@
 #ifndef JSON_H
 #define JSON_H
 
+#define FOREACH_FIELD_T(FIELD_T) \
+        FIELD_T(J_INT)   \
+        FIELD_T(J_STRING)  \
+
+#define GENERATE_ENUM(ENUM) ENUM,
+#define GENERATE_STRING(STRING) #STRING,
+
 typedef enum {
-
-  J_PRIMITIVE,
-  J_STRING
-
+  FOREACH_FIELD_T(GENERATE_ENUM)
 } Field_t;
 
+static const char *FIELD_T_STRING[] = {
+  FOREACH_FIELD_T(GENERATE_STRING)
+};
+
 typedef struct Field {
-  Field_t FIELD_TYPE;
+  Field_t field_type;
   char *field_name;
+  void *field_value;
 } Field;
 
 typedef struct Json {
@@ -22,11 +31,14 @@ typedef struct Json {
 
 } Json;
 
+Field* field_new(Field_t type);
+char* field_to_string(Field *field);
+
 // function defs
 Json* json_new(); // ctor
 void json_destroy(Json *json); //dtor
 
-void json_add_field(json *json);
+void json_add_field(Json *json, Field *field);
 void json_remove_field(Json *json);
 char* json_get_string(Json *json);
 
