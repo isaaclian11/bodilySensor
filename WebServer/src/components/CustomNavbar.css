@@ -1,0 +1,29 @@
+nav.bar, .navbar-expand {
+    background-color: darkblue;
+}
+
+.navbar-default {
+    background-color: none;
+    border: none;
+    border-radius: 0;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    color:red;
+    font-size: 1.1rem;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.navbar-brand:hover {
+    font-size: 1.35rem;
+
+}
