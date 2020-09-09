@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BodilySensonBLE</string>
+    <string name="alert_title">Warning!</string>
+    <string name="alert_msg">Location is required to use the Bluetooth function</string>
+    <string name="cancel">Cancel</string>
+    <string name="setting">Setting</string>
+
+</resources>
