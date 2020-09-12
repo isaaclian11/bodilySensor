@@ -65,6 +65,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        btn_cancel = findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BleManager.getInstance().cancelScan();
+            }
+        });
+
         btn_clear = findViewById(R.id.btn_clear);
         btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,8 +103,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDetail(BleDevice bleDevice) {
                 if (BleManager.getInstance().isConnected(bleDevice)) {
-                    Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
-                    intent.putExtra(ServicesActivity.BLUETOOTH_DEVICE, bleDevice);
+                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                    intent.putExtra(DetailActivity.CONNECTED_DEVICE_DETAIL, bleDevice);
                     startActivity(intent);
                 }
             }
