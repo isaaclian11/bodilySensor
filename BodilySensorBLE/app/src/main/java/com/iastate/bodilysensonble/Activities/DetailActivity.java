@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
@@ -49,18 +50,24 @@ public class DetailActivity extends AppCompatActivity {
                     IS_RECORDING = true;
                     btn_record.setText("Stop");
                     if(thisBLEDevice!=null){
-                            BleManager.getInstance().read(thisBLEDevice, SERVICE_UUID, READ_UUID, new BleReadCallback() {
+                            BleManager.getInstance().notify(thisBLEDevice, SERVICE_UUID, READ_UUID, new BleNotifyCallback() {
                                 @Override
-                                public void onReadSuccess(byte[] data) {
-                                    runThread(data);
+                                public void onNotifySuccess() {
+                                    Log.d(TAG, "onNotifySuccess: Notify Success");
                                 }
 
                                 @Override
-                                public void onReadFailure(BleException exception) {
-                                    Log.e(TAG, "onReadFailure: " + exception.getDescription());
+                                public void onNotifyFailure(BleException exception) {
+
+                                }
+
+                                @Override
+                                public void onCharacteristicChanged(byte[] data) {
+                                    Log.d(TAG, "onCharacteristicChanged: Characteristic Changed");
+                                    data_read.append(HexUtil.formatHexString(data, true));
+                                    data_read.append("\n");
                                 }
                             });
-
                     }
                 }
                 else{
