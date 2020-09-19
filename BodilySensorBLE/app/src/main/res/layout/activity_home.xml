@@ -10,7 +10,7 @@
         android:id="@+id/btn_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scan"
+        android:text="@string/scan"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"/>
 
@@ -18,19 +18,19 @@
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_toRightOf="@+id/btn_scan"/>
+        android:layout_toEndOf="@+id/btn_scan"/>
 
     <Button
         android:id="@+id/btn_clear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear"
+        android:text="@string/clear"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_toRightOf="@+id/btn_cancel"/>
+        android:layout_toEndOf="@+id/btn_cancel"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ble_recyclerview"

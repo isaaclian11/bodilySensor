@@ -6,5 +6,8 @@
     <string name="setting">Setting</string>
 
     <string name="record">Record</string>
+    <string name="scan">Scan</string>
+    <string name="cancel">Cancel</string>
+    <string name="clear">Clear</string>
 
 </resources>
