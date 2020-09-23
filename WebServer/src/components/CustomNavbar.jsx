@@ -9,15 +9,15 @@ export default class CustomNavbar extends Component {
         return (
             <Navbar default collapseOnSelect>
                 <Navbar>
-                    <Navbar.Brand>
+                    {/* <Navbar.Brand>
                         <Link to="/home">Cloud n Back</Link>
                     </Navbar.Brand>
-                    <Navbar.Toggle />
+                    <Navbar.Toggle /> */}
                 </Navbar>
                 <Navbar.Collapse>
                     <Nav className="ml-auto">
                         <NavItem>
-                            <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
+                            <li className="nav-item"><Link className="nav-link" to="/">SignIn</Link></li>
                         </NavItem>
                         <NavItem>
                             <li>
