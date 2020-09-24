@@ -153,34 +153,32 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onPermissionGranted(String permission) {
-        switch (permission) {
-            case Manifest.permission.ACCESS_FINE_LOCATION:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isGPSOn()) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(R.string.alert_title)
-                            .setMessage(R.string.alert_msg)
-                            .setNegativeButton(R.string.cancel,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            finish();
-                                        }
-                                    })
-                            .setPositiveButton(R.string.setting,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                            startActivityForResult(intent, PERMISSION_GPS_REQ_CODE);
-                                        }
-                                    })
+        if (Manifest.permission.ACCESS_FINE_LOCATION.equals(permission)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isGPSOn()) {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.alert_title)
+                        .setMessage(R.string.alert_msg)
+                        .setNegativeButton(R.string.cancel,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                })
+                        .setPositiveButton(R.string.setting,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                        startActivityForResult(intent, PERMISSION_GPS_REQ_CODE);
+                                    }
+                                })
 
-                            .setCancelable(false)
-                            .show();
-                } else {
-                    scan();
-                }
-                break;
+                        .setCancelable(false)
+                        .show();
+            } else {
+                scan();
+            }
         }
     }
 

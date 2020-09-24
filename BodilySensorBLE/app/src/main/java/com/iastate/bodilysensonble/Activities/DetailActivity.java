@@ -10,12 +10,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleIndicateCallback;
 import com.clj.fastble.callback.BleNotifyCallback;
 import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
 import com.iastate.bodilysensonble.R;
+
+import java.util.Arrays;
 
 
 public class DetailActivity extends AppCompatActivity {
@@ -48,56 +51,63 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!IS_RECORDING){
                     IS_RECORDING = true;
-                    btn_record.setText("Stop");
+                    btn_record.setText(R.string.stop);
                     if(thisBLEDevice!=null){
-                            BleManager.getInstance().notify(thisBLEDevice, SERVICE_UUID, READ_UUID, new BleNotifyCallback() {
+                            BleManager.getInstance().indicate(thisBLEDevice, SERVICE_UUID, READ_UUID, new BleIndicateCallback() {
                                 @Override
-                                public void onNotifySuccess() {
-                                    Log.d(TAG, "onNotifySuccess: Notify Success");
+                                public void onIndicateSuccess() {
+
                                 }
 
                                 @Override
-                                public void onNotifyFailure(BleException exception) {
+                                public void onIndicateFailure(BleException exception) {
 
                                 }
 
                                 @Override
                                 public void onCharacteristicChanged(byte[] data) {
                                     Log.d(TAG, "onCharacteristicChanged: Characteristic Changed");
-                                    data_read.append(HexUtil.formatHexString(data, true));
-                                    data_read.append("\n");
+                                    char[] hexString = HexUtil.formatHexString(data, false).toCharArray();
+                                    decodeHexValue(hexString);
+//                                    data_read.append(Arrays.toString(hexString));
+//                                    data_read.append("\n");
                                 }
                             });
+
                     }
                 }
                 else{
                     IS_RECORDING = false;
-                    btn_record.setText("Record");
+                    btn_record.setText(R.string.record);
                 }
             }
         });
 
     }
 
-    private void runThread(final byte[] data){
-        new Thread() {
-            public void run(){
-                while(IS_RECORDING){
-                    try{
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                data_read.append(HexUtil.formatHexString(data, true));
-                                data_read.append("\n");
-                                Log.d(TAG, "onReadSuccess: " + data.toString());
-                            }
-                        });
-                        Thread.sleep(300);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
+    private void decodeHexValue(char[] data){
+
     }
+
+//    private void runThread(final byte[] data){
+//        new Thread() {
+//            public void run(){
+//                while(IS_RECORDING){
+//                    try{
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                data_read.append(HexUtil.formatHexString(data, true));
+//                                data_read.append("\n");
+//                                Log.d(TAG, "onReadSuccess: " + Arrays.toString(data));
+//                            }
+//                        });
+//                        Thread.sleep(300);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        }.start();
+//    }
 }
