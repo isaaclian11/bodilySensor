@@ -11,14 +11,10 @@ import android.widget.TextView;
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleIndicateCallback;
-import com.clj.fastble.callback.BleNotifyCallback;
-import com.clj.fastble.callback.BleReadCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
 import com.iastate.bodilysensonble.R;
-
-import java.util.Arrays;
 
 
 public class DetailActivity extends AppCompatActivity {
@@ -33,7 +29,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private BleDevice thisBLEDevice;
     Button btn_record;
-    TextView data_read;
+    TextView respiration, weight, heart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +39,9 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         thisBLEDevice = intent.getParcelableExtra(CONNECTED_DEVICE_DETAIL);
 
-        data_read = findViewById(R.id.data_read);
+        respiration = findViewById(R.id.text_view_resp);
+        weight = findViewById(R.id.text_view_weight);
+        heart = findViewById(R.id.text_view_heart);
 
         btn_record = findViewById(R.id.btn_record);
         btn_record.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +65,8 @@ public class DetailActivity extends AppCompatActivity {
                                 @Override
                                 public void onCharacteristicChanged(byte[] data) {
                                     Log.d(TAG, "onCharacteristicChanged: Characteristic Changed");
-                                    char[] hexString = HexUtil.formatHexString(data, false).toCharArray();
-                                    decodeHexValue(hexString);
-//                                    data_read.append(Arrays.toString(hexString));
-//                                    data_read.append("\n");
+                                    String hexString = HexUtil.formatHexString(data, false);
+                                    displayData(hexString);
                                 }
                             });
 
@@ -85,29 +81,42 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
-    private void decodeHexValue(char[] data){
+    private void displayData(String hexString){
+        String dataToDisplay;
+        int dataEnd = hexString.length()-2;
 
+        Log.d(TAG, "displayData: " + hexString.substring(2,3));
+
+        if(hexString.substring(2, 4).equals("01")){ //integer
+            int dataToInt = Integer.decode("0x" + hexString.substring(6, dataEnd));
+            dataToDisplay = String.valueOf(dataToInt);
+        }else if(hexString.substring(2, 4).equals("02")){ //double
+            Long longValue = hexToLong(hexString.substring(6, dataEnd));
+            Double dataToDouble = Double.longBitsToDouble(longValue);
+            dataToDisplay = String.valueOf(dataToDouble);
+        }else{ //String
+            StringBuilder dataToString = new StringBuilder();
+            for (int i = 0; i < hexString.substring(6, dataEnd).length(); i+=2) {
+                String str = hexString.substring(6, dataEnd).substring(i, i+2);
+                dataToString.append((char)Integer.parseInt(str, 16));
+            }
+            dataToDisplay = dataToString.toString();
+        }
+
+        if(hexString.substring(0, 2).equals("02") && hexString.substring(4, 6).equals("00")){ //Respiration
+            respiration.setText("Respiration: " + dataToDisplay + "/min");
+        }else if(hexString.substring(0, 2).equals("03") && hexString.substring(4, 6).equals("00")){ //Heartbeat
+            heart.setText("Heartbeat: " + dataToDisplay + "/min");
+        }else if(hexString.substring(0, 2).equals("04") && hexString.substring(4, 6).equals("00")){ //Weight
+            weight.setText("Weight: "+ dataToDisplay + "lbs");
+        }
     }
 
-//    private void runThread(final byte[] data){
-//        new Thread() {
-//            public void run(){
-//                while(IS_RECORDING){
-//                    try{
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                data_read.append(HexUtil.formatHexString(data, true));
-//                                data_read.append("\n");
-//                                Log.d(TAG, "onReadSuccess: " + Arrays.toString(data));
-//                            }
-//                        });
-//                        Thread.sleep(300);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }.start();
-//    }
+    private static long hexToLong(String hex){
+        if (hex.length() == 16) {
+            return (hexToLong(hex.substring(0, 1)) << 60)
+                    | hexToLong(hex.substring(1));
+        }
+        return Long.parseLong(hex, 16);
+    }
 }

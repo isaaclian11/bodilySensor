@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.DetailActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        android:id="@+id/data_read"/>
+        android:id="@+id/text_view_resp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/respiration"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/text_view_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/weight"
+        android:layout_below="@id/text_view_resp"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/text_view_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/heartbeat"
+        android:layout_below="@id/text_view_weight"
+        android:textSize="30sp" />
 
     <Button
         android:id="@+id/btn_record"

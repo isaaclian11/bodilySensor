@@ -10,4 +10,8 @@
     <string name="clear">Clear</string>
     <string name="stop">Stop</string>
 
+    <string name="respiration">Respiration: --</string>
+    <string name="weight">Weight: --</string>
+    <string name="heartbeat">Heartbeat --</string>
+
 </resources>
