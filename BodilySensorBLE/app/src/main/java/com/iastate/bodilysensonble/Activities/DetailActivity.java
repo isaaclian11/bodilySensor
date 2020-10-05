@@ -151,6 +151,7 @@ public class DetailActivity extends AppCompatActivity {
                 else{
                     IS_RECORDING = false;
                     btn_record.setText(R.string.record);
+                    BleManager.getInstance().stopIndicate(thisBLEDevice, SERVICE_UUID, READ_UUID);
                 }
             }
         });
