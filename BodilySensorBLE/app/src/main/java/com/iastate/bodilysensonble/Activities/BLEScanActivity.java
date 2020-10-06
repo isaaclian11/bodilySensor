@@ -34,7 +34,7 @@ import com.iastate.bodilysensonble.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class BLEScanActivity extends AppCompatActivity {
 
     private static final String TAG = "Home";
 
@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_ble_scan);
 
         BleManager.getInstance().init(getApplication());
         BleManager.getInstance()
