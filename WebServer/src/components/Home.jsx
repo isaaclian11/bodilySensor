@@ -43,27 +43,41 @@ export default class Home extends Component {
             //     }
             // };
 
+            // var params = {
+            //     TableName : 'bla3',
+            //     Key: {
+            //         provider_id: "5433"
+                    
+            //     }
+            //   };
+              
+              var documentClient = new AWS.DynamoDB.DocumentClient();
+              
+            //   documentClient.get(params, function(err, data) {
+            //     if (err) console.log(err);
+            //     else console.log(data);
+            //   });
+            
             var params = {
-                TableName : table,
-                KeyConditionExpression: "#yr = :yyyy",
-                ExpressionAttributeNames:{
-                    "#yr": "id"
-                },
-                ExpressionAttributeValues: {
-                    ":yyyy": name
+                TableName: 'users',
+                Item: {
+                  'user_id' : "testing",
+                  'email' : "testing",
+                  'first_name' : "testing",
+                  'last_name' : "testing",
+                  'phone_number' : "testing",
+                  'user_type' : "Provider",
+                  
                 }
-            };
-
-            this.docClient.query(params, function(err, data) {
+              };
+              documentClient.put(params, function(err, data) {
                 if (err) {
-                    console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+                  console.log("Error", err);
                 } else {
-                    console.log("Query succeeded.");
-                    data.Items.forEach(function(item) {
-                        console.log(" -", item.patient_id + ": " + item.provider_id);
-                    });
+                  console.log("Success", data);
                 }
-            });
+              });
+
 
             //console.log(awsStuff);
                 return (<div>
