@@ -28,6 +28,7 @@ import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.google.firebase.auth.FirebaseAuth;
 import com.iastate.bodilysensonble.Adapters.BluetoothListAdapter;
 import com.iastate.bodilysensonble.R;
 
@@ -41,7 +42,9 @@ public class BLEScanActivity extends AppCompatActivity {
     private static final int PERMISSION_LOC_REQ_CODE = 2;
     private static final int PERMISSION_GPS_REQ_CODE = 1;
 
-    Button btn_scan, btn_cancel, btn_clear;
+    private FirebaseAuth mAuth;
+
+    Button btn_scan, btn_cancel, btn_clear, btn_signout;
     RecyclerView ble_recyclerview;
     BluetoothListAdapter bluetoothListAdapter;
 
@@ -49,6 +52,8 @@ public class BLEScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ble_scan);
+
+        mAuth = FirebaseAuth.getInstance();
 
         BleManager.getInstance().init(getApplication());
         BleManager.getInstance()
@@ -112,6 +117,17 @@ public class BLEScanActivity extends AppCompatActivity {
 
         ble_recyclerview.setLayoutManager(new LinearLayoutManager(this));
         ble_recyclerview.setAdapter(bluetoothListAdapter);
+
+        btn_signout = findViewById(R.id.btn_signOut);
+        btn_signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                startActivity(signInIntent);
+            }
+        });
+
     }
 
     @Override
@@ -124,6 +140,11 @@ public class BLEScanActivity extends AppCompatActivity {
         super.onDestroy();
         BleManager.getInstance().disconnectAllDevice();
         BleManager.getInstance().destroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 
     public void checkPermissions(){

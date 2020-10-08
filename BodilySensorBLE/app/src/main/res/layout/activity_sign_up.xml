@@ -9,11 +9,29 @@
     <EditText
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="220dp"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/first_name"
+        android:id="@+id/signUp_first_name"
+        android:inputType="textCapSentences"/>
+
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/last_name"
+        android:id="@+id/signUp_last_name"
+        android:inputType="textCapSentences"
+        android:layout_below="@id/signUp_first_name" />
+
+    <EditText
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:hint="@string/email"
         android:id="@+id/signUp_email"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        android:layout_below="@id/signUp_last_name"/>
 
     <EditText
         android:layout_width="380dp"
@@ -38,25 +56,25 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/signUp_confirm_password"
-        android:id="@+id/signUp_age"
-        android:hint="@string/age"
-        android:inputType="number"/>
+        android:id="@+id/signUp_ph"
+        android:hint="@string/phone_number"
+        android:inputType="textCapSentences"/>
 
     <EditText
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/signUp_age"
-        android:id="@+id/signUp_ph"
-        android:hint="@string/phone_number"
-        android:inputType="number"/>
+        android:layout_below="@id/signUp_ph"
+        android:id="@+id/signUp_birthday"
+        android:hint="@string/birthday"
+        android:inputType="textCapSentences"/>
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/signUp_gender"
-        android:layout_below="@+id/signUp_ph"
+        android:layout_below="@+id/signUp_birthday"
         android:layout_marginTop="16dp"/>
 
     <Spinner

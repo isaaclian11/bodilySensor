@@ -15,13 +15,17 @@
     <string name="heartbeat">Heartbeat --</string>
 
     <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="signin">Sign In</string>
     <string name="signup">Sign Up</string>
+    <string name="signout">Sign Out</string>
     <string name="age">Age</string>
     <string name="phone_number">Phone Number (###-###-####)</string>
     <string name="gender">Gender</string>
+    <string name="birthday">Birthday (YYYY-MM-DD)</string>
 
     <string-array name="genders">
         <item>Male</item>

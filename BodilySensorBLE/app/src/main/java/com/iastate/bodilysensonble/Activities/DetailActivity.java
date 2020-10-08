@@ -15,6 +15,7 @@ import com.clj.fastble.callback.BleIndicateCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
+import com.google.firebase.auth.FirebaseAuth;
 import com.iastate.bodilysensonble.R;
 
 
@@ -40,8 +41,10 @@ public class DetailActivity extends AppCompatActivity {
 
     private boolean IS_RECORDING = false;
 
+    private FirebaseAuth mAuth;
+
     private BleDevice thisBLEDevice;
-    Button btn_record;
+    Button btn_record, signout;
     TextView respiration, weight, heart;
 
     private String currentHeartRateInHex;
@@ -56,6 +59,17 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         thisBLEDevice = intent.getParcelableExtra(CONNECTED_DEVICE_DETAIL);
+
+        mAuth = FirebaseAuth.getInstance();
+        signout = findViewById(R.id.detail_signout_btn);
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent signInIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                startActivity(signInIntent);
+            }
+        });
 
         respiration = findViewById(R.id.text_view_resp);
         weight = findViewById(R.id.text_view_weight);
