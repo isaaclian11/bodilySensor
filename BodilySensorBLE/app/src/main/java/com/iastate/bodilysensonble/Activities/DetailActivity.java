@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 
 import com.clj.fastble.BleManager;
 import com.clj.fastble.callback.BleIndicateCallback;
@@ -16,7 +18,12 @@ import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
 import com.clj.fastble.utils.HexUtil;
 import com.google.firebase.auth.FirebaseAuth;
+import com.iastate.bodilysensonble.Helpers.DynamoDBAccess;
+import com.iastate.bodilysensonble.Helpers.MeasurementModel;
 import com.iastate.bodilysensonble.R;
+
+import java.util.Date;
+import java.util.UUID;
 
 
 public class DetailActivity extends AppCompatActivity {
@@ -50,7 +57,8 @@ public class DetailActivity extends AppCompatActivity {
     private String currentHeartRateInHex;
     private String currentRespirationRateInHex;
     private String currentWeightInHex;
-
+    private String sessionID;
+    private String currentUserUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class DetailActivity extends AppCompatActivity {
         thisBLEDevice = intent.getParcelableExtra(CONNECTED_DEVICE_DETAIL);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUserUID = mAuth.getUid();
         signout = findViewById(R.id.detail_signout_btn);
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +149,7 @@ public class DetailActivity extends AppCompatActivity {
                 if(!IS_RECORDING){
                     IS_RECORDING = true;
                     btn_record.setText(R.string.stop);
+                    sessionID = UUID.randomUUID().toString();
                     if(thisBLEDevice!=null){
                             BleManager.getInstance().indicate(thisBLEDevice, SERVICE_UUID, READ_UUID, new BleIndicateCallback() {
                                 @Override
@@ -220,6 +230,15 @@ public class DetailActivity extends AppCompatActivity {
                     respiration.setText("Respiration Rate: " + dataToInt * 60 * 24 + "/day");
                     break;
             }
+
+            MeasurementModel respModel = new MeasurementModel(currentUserUID);
+            respModel.setRaw_measurement(dataToInt);
+            respModel.setSession_id(sessionID);
+            respModel.setTime_ms(new Date().getTime());
+            respModel.setDataType(MeasurementModel.SENSORS.RESPIRATION);
+            AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
+            addSensorMeasurement.execute(respModel);
+
         } else if (currentRespirationRateInHex.substring(2, 4).equals("02")) { //double
             long longValue = hexToLong(currentRespirationRateInHex.substring(6, dataEnd));
             double dataToDouble = Double.longBitsToDouble(longValue);
@@ -237,6 +256,13 @@ public class DetailActivity extends AppCompatActivity {
                     heart.setText("Respiration Rate: " + dataToDouble * 60 * 24 + "/day");
                     break;
             }
+            MeasurementModel respModel = new MeasurementModel(currentUserUID);
+            respModel.setRaw_measurement(dataToDouble);
+            respModel.setSession_id(sessionID);
+            respModel.setTime_ms(new Date().getTime());
+            respModel.setDataType(MeasurementModel.SENSORS.RESPIRATION);
+            AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
+            addSensorMeasurement.execute(respModel);
         }
     }
 
@@ -259,6 +285,14 @@ public class DetailActivity extends AppCompatActivity {
                     heart.setText("Heart Rate: " + dataToInt * 60 * 24 + "/day");
                     break;
             }
+            MeasurementModel heartModel = new MeasurementModel(currentUserUID);
+            heartModel.setRaw_measurement(dataToInt);
+            heartModel.setSession_id(sessionID);
+            heartModel.setTime_ms(new Date().getTime());
+            heartModel.setDataType(MeasurementModel.SENSORS.HEART);
+            AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
+            addSensorMeasurement.execute(heartModel);
+
         } else if (currentHeartRateInHex.substring(2, 4).equals("02")) { //double
             long longValue = hexToLong(currentHeartRateInHex.substring(6, dataEnd));
             double dataToDouble = Double.longBitsToDouble(longValue);
@@ -276,6 +310,13 @@ public class DetailActivity extends AppCompatActivity {
                     heart.setText("Heart Rate: " + dataToDouble * 60 * 24 + "/day");
                     break;
             }
+            MeasurementModel heartModel = new MeasurementModel(currentUserUID);
+            heartModel.setRaw_measurement(dataToDouble);
+            heartModel.setSession_id(sessionID);
+            heartModel.setTime_ms(new Date().getTime());
+            heartModel.setDataType(MeasurementModel.SENSORS.HEART);
+            AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
+            addSensorMeasurement.execute(heartModel);
         }
     }
 
@@ -292,6 +333,13 @@ public class DetailActivity extends AppCompatActivity {
                     weight.setText("Weight: " + dataToInt * 0.454 + "kg");
                     break;
             }
+            MeasurementModel weightModel = new MeasurementModel(currentUserUID);
+            weightModel.setRaw_measurement(dataToInt);
+            weightModel.setSession_id(sessionID);
+            weightModel.setTime_ms(new Date().getTime());
+            weightModel.setDataType(MeasurementModel.SENSORS.WEIGHT);
+            AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
+            addSensorMeasurement.execute(weightModel);
         } else if (currentHeartRateInHex.substring(2, 4).equals("02")) { //double
             long longValue = hexToLong(currentHeartRateInHex.substring(6, dataEnd));
             double dataToDouble = Double.longBitsToDouble(longValue);
@@ -303,6 +351,13 @@ public class DetailActivity extends AppCompatActivity {
                     weight.setText("Weight: " + dataToDouble * 0.454 + "kg");
                     break;
             }
+            MeasurementModel weightModel = new MeasurementModel(currentUserUID);
+            weightModel.setRaw_measurement(dataToDouble);
+            weightModel.setSession_id(sessionID);
+            weightModel.setTime_ms(new Date().getTime());
+            weightModel.setDataType(MeasurementModel.SENSORS.WEIGHT);
+            AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
+            addSensorMeasurement.execute(weightModel);
         }
     }
 
@@ -312,5 +367,19 @@ public class DetailActivity extends AppCompatActivity {
                     | hexToLong(hex.substring(1));
         }
         return Long.parseLong(hex, 16);
+    }
+
+    private class AddSensorMeasurement extends AsyncTask<MeasurementModel, Void, Boolean> {
+        Boolean putSuccess = false;
+        @Override
+        protected Boolean doInBackground(MeasurementModel... models) {
+            DynamoDBAccess access = DynamoDBAccess.getInstance(getApplicationContext());
+            try{
+                putSuccess = access.addNewMeasurement(models[0]);
+            }catch (Exception e){
+                Log.d(TAG, "doInBackground: Put item failed");
+            }
+            return putSuccess;
+        }
     }
 }

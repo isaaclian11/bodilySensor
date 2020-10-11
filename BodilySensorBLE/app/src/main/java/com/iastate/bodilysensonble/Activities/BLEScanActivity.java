@@ -38,7 +38,6 @@ import java.util.List;
 public class BLEScanActivity extends AppCompatActivity {
 
     private static final String TAG = "Home";
-
     private static final int PERMISSION_LOC_REQ_CODE = 2;
     private static final int PERMISSION_GPS_REQ_CODE = 1;
 

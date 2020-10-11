@@ -19,7 +19,6 @@ import com.iastate.bodilysensonble.R;
 public class SignInActivity extends AppCompatActivity {
 
     public String TAG = "SignInActivity";
-    private String USER_ID = "USER_ID";
 
     private FirebaseAuth mAuth;
 
@@ -31,6 +30,8 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         mAuth = FirebaseAuth.getInstance();
+
+
         email = findViewById(R.id.signIn_email);
         password = findViewById(R.id.signIn_password);
         signInBtn = findViewById(R.id.signIn_btn);
@@ -46,7 +47,6 @@ public class SignInActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             Intent bleScanIntent = new Intent(getApplicationContext(), BLEScanActivity.class);
-                            bleScanIntent.putExtra(USER_ID, task.getResult().getUser().getUid());
                             startActivity(bleScanIntent);
                         }
                     });

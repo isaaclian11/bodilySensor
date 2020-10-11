@@ -15,12 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
+
 import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -29,15 +25,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.iastate.bodilysensonble.Helpers.DynamoDBAccess;
 import com.iastate.bodilysensonble.R;
 
-import java.time.LocalDate;
 
 public class SignUpActivity extends AppCompatActivity {
 
     public final String TAG = "SignUpActivity";
-
-    private final String CURRENT_USER = "CURRENT_USER";
-    private final String IDENTITY_POOL_ID = "us-east-2:bf60357a-3165-4185-89f6-ece495de39d0";
-    private final String USER_TABLE = "users";
 
     private FirebaseAuth mAuth;
 
@@ -131,7 +122,6 @@ public class SignUpActivity extends AppCompatActivity {
                                 userAsyncTask.execute(userDetails);
 
                                 Intent detailIntent = new Intent(getApplicationContext(), BLEScanActivity.class);
-                                detailIntent.putExtra(CURRENT_USER, currentUser);
                                 startActivity(detailIntent);
                             }else {
                                 Toast.makeText(getApplicationContext(), task.getException().toString(),
@@ -151,7 +141,6 @@ public class SignUpActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!=null){
             Intent detailIntent = new Intent(getApplicationContext(), BLEScanActivity.class);
-            detailIntent.putExtra(CURRENT_USER, currentUser);
             startActivity(detailIntent);
         }
     }
