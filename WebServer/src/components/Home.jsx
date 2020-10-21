@@ -15,6 +15,48 @@ export default class Home extends Component {
       }
 
       
+      async pull_data(){
+        AWS.config.update({
+            region: 'us-east-2',
+            endpoint: 'dynamodb.us-east-2.amazonaws.com',
+            accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
+            secretAccessKey: '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'
+        });
+  
+        this.dynamodb = new AWS.DynamoDB();
+        this.docClient = new AWS.DynamoDB.DocumentClient();
+  
+        var params = {
+            TableName: 'users',
+            Key:{
+                "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
+            }
+        };
+          
+        var documentClient = new AWS.DynamoDB.DocumentClient();
+          
+        // var toReturn2 = "BOOOO";
+
+        //  var toReturn =  
+        //  {
+        //     "name":"John",
+        //     "age":30,
+        //     "cars":[ "Ford", "BMW", "Fiat" ]
+        //   };
+
+         return await documentClient.get(params, function(err, data) {
+            if (err){ 
+                return "YOU F'ed Up"
+            }
+            else{
+                console.log(data.Item.email);
+                return "BOOOO";
+            }
+          }).promise;
+
+
+          //return "I HATE THIS:" + toReturn2;
+      }
 
     render() {
 
@@ -23,68 +65,41 @@ export default class Home extends Component {
         const user = firebaseApp.auth().currentUser;
         //const awsStuff = callAWS;
         if (user) {
-            AWS.config.update({
-                region: 'us-east-2',
-                endpoint: 'dynamodb.us-east-2.amazonaws.com',
-                accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
-                secretAccessKey: '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'
-            });
-      
-            this.dynamodb = new AWS.DynamoDB();
-            this.docClient = new AWS.DynamoDB.DocumentClient();
-            var table = "Provider_Patients";
-      
-            var name = 1;
+           
+              return (
+                <div>
+                 I just need this to work {this.pull_data()} sigh..
+                  </div>);
+              
             
             // var params = {
-            //     TableName: table,
-            //     Key:{
-            //         "provider_id": name
-            //     }
-            // };
-
-            // var params = {
-            //     TableName : 'bla3',
-            //     Key: {
-            //         provider_id: "5433"
-                    
+            //     TableName: 'users',
+            //     Item: {
+            //       'user_id' : "testing",
+            //       'email' : "testing",
+            //       'first_name' : "testing",
+            //       'last_name' : "testing",
+            //       'phone_number' : "testing",
+            //       'user_type' : "Provider",
+                  
             //     }
             //   };
-              
-              var documentClient = new AWS.DynamoDB.DocumentClient();
-              
-            //   documentClient.get(params, function(err, data) {
-            //     if (err) console.log(err);
-            //     else console.log(data);
+            //   documentClient.put(params, function(err, data) {
+            //     if (err) {
+            //       console.log("Error", err);
+            //     } else {
+            //       console.log("Success", data);
+
+            //     }
             //   });
-            
-            var params = {
-                TableName: 'users',
-                Item: {
-                  'user_id' : "testing",
-                  'email' : "testing",
-                  'first_name' : "testing",
-                  'last_name' : "testing",
-                  'phone_number' : "testing",
-                  'user_type' : "Provider",
-                  
-                }
-              };
-              documentClient.put(params, function(err, data) {
-                if (err) {
-                  console.log("Error", err);
-                } else {
-                  console.log("Success", data);
-                }
-              });
 
 
             //console.log(awsStuff);
-                return (<div>
-                    {PostData.map((person, index) => (
-                        <p key={index}>Hello, {person.name}!</p>
-                    ))}
-                    </div>);  
+                // return (<div>
+                //     {PostData.map((person, index) => (
+                //         <p key={index}>Hello, {person.name}!</p>
+                //     ))}
+                //     </div>);  
         }
         else {
             return (

@@ -58,7 +58,7 @@ class SignUpFormBase  extends Component {
     var params = {
       TableName: 'users',
       Item: {
-        'user_id' : this.state.username,
+        'user_id' : this.state.username, //update to firebase userid
         'email' : this.state.email,
         'first_name' : this.state.firstname,
         'last_name' : this.state.lastname,
