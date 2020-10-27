@@ -11,95 +11,131 @@ import PostData from './post.json'
 export default class Home extends Component {
     constructor() {
         super();
-        this.state = { data: {'userID': 'zbc123'} };
+        this.state = { Email: 'Need To Change' };
+        this.pullingEmail = this.pullingEmail.bind(this)
+        this.pullingEmail()
       }
 
-      
-      async pull_data(){
+
+      async pullingEmail() {
+
         AWS.config.update({
-            region: 'us-east-2',
-            endpoint: 'dynamodb.us-east-2.amazonaws.com',
-            accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
-            secretAccessKey: '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'
-        });
-  
-        this.dynamodb = new AWS.DynamoDB();
-        this.docClient = new AWS.DynamoDB.DocumentClient();
-  
-        var params = {
-            TableName: 'users',
-            Key:{
-                "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
-            }
-        };
-          
-        var documentClient = new AWS.DynamoDB.DocumentClient();
-          
-        // var toReturn2 = "BOOOO";
+                    region: 'us-east-2',
+                    endpoint: 'dynamodb.us-east-2.amazonaws.com',
+                    accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
+                    secretAccessKey: '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'
+                });
 
-        //  var toReturn =  
-        //  {
-        //     "name":"John",
-        //     "age":30,
-        //     "cars":[ "Ford", "BMW", "Fiat" ]
-        //   };
-
-         return await documentClient.get(params, function(err, data) {
-            if (err){ 
-                return "YOU F'ed Up"
-            }
-            else{
-                console.log(data.Item.email);
-                return "BOOOO";
-            }
-          }).promise;
+        var docClient = new AWS.DynamoDB.DocumentClient();
 
 
-          //return "I HATE THIS:" + toReturn2;
+          try{
+            var params = {
+                TableName: 'users',
+                Key:{
+                    "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
+                }
+            }; 
+            var result = await docClient.get(params).promise().then(result => this.setState({
+                Email: result.Item.email
+              }))
+          } catch (error) {
+              console.error(error);
+          }
       }
+                // async getData() {
+                //     AWS.config.update({
+                //         region: 'us-east-2',
+                //         endpoint: 'dynamodb.us-east-2.amazonaws.com',
+                //         accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
+                //         secretAccessKey: '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'
+                //     });
+                
+                //     //this.dynamodb = new AWS.DynamoDB();
+                //     this.docClient = new AWS.DynamoDB.DocumentClient();
+                
+                //     var params = {
+                //         TableName: 'users',
+                //         Key:{
+                //             "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
+                //         }
+                //     };
+                        
+                //     var documentClient = new AWS.DynamoDB.DocumentClient();
+                //     var dataPulled;
+                //     this.setState({ Email: await documentClient.get(params, function(err, data) {
+                //         if (err){ 
+                            
+                //             dataPulled = "YOU F'ed Up";
+                //         }
+                //         else{
+                //             console.log(data.Item.email+" in Function");
+                //             // this.setState({ Email: data.Item.email });
+                //             dataPulled = "IT WORKED!";
+                //         }
+                //         }).Item.email})
+                // }
+
+
+
+            //   updateState(dataPassed) {
+            //     (async () => {
+            //        const data = await this.pull_data();
+            //        console.log(data);
+            //        return JSON.stringify(data);
+            //     })();
+            // }
+                
+            //   async pull_data(){
+            //     AWS.config.update({
+            //         region: 'us-east-2',
+            //         endpoint: 'dynamodb.us-east-2.amazonaws.com',
+            //         accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
+            //         secretAccessKey: '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'
+            //     });
+
+            //     //this.dynamodb = new AWS.DynamoDB();
+            //     this.docClient = new AWS.DynamoDB.DocumentClient();
+
+            //     var params = {
+            //         TableName: 'users',
+            //         Key:{
+            //             "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
+            //         }
+            //     };
+                    
+            //     var documentClient = new AWS.DynamoDB.DocumentClient();
+            //     var dataPulled;
+            //     var getting = documentClient.get(params, function(err, data) {
+            //         if (err){ 
+            //             dataPulled = "YOU F'ed Up";
+            //         }
+            //         else{
+            //             console.log(data.Item.email+" in Function");
+            //             //this.updateState(data);
+            //             dataPulled = "IT WORKED!";
+            //         }
+            //       }).promise;
+            //       return dataPulled;
+            //   }
 
     render() {
 
 
         //firebaseApp.auth().setPersistence(firebaseApp.auth.Auth.Persistence.SESSION)
         const user = firebaseApp.auth().currentUser;
-        //const awsStuff = callAWS;
+        // var toPrint = this.pullingEmail();
+        console.log(this.state.Email)
+        //const dataReturned = this.state.Email;
+        //console.log(toPrint);
+
+       
         if (user) {
            
               return (
                 <div>
-                 I just need this to work {this.pull_data()} sigh..
+                 I just need this to work {this.state.Email} sigh..
                   </div>);
-              
-            
-            // var params = {
-            //     TableName: 'users',
-            //     Item: {
-            //       'user_id' : "testing",
-            //       'email' : "testing",
-            //       'first_name' : "testing",
-            //       'last_name' : "testing",
-            //       'phone_number' : "testing",
-            //       'user_type' : "Provider",
-                  
-            //     }
-            //   };
-            //   documentClient.put(params, function(err, data) {
-            //     if (err) {
-            //       console.log("Error", err);
-            //     } else {
-            //       console.log("Success", data);
-
-            //     }
-            //   });
-
-
-            //console.log(awsStuff);
-                // return (<div>
-                //     {PostData.map((person, index) => (
-                //         <p key={index}>Hello, {person.name}!</p>
-                //     ))}
-                //     </div>);  
         }
         else {
             return (
