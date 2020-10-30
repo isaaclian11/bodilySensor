@@ -48,6 +48,6 @@ public class MeasurementModel {
     }
 
     public enum SENSORS{
-        HEART, RESPIRATION, WEIGHT
+        PULSE, RESPIRATION, WEIGHT
     }
 }

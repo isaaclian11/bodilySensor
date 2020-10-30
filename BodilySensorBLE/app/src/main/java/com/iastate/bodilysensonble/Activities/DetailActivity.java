@@ -31,8 +31,8 @@ public class DetailActivity extends AppCompatActivity {
     public String TAG = "DetailActivity";
 
     public static final String CONNECTED_DEVICE_DETAIL = "CONNECTED_DEVICE_DETAIL";
-    private static final String SERVICE_UUID = "00001810-0000-1000-8000-00805f9b34fb";
-    private static final String READ_UUID = "5c2355f3-2884-466c-8d41-0f31cfa49f7e";
+    private static final String SERVICE_UUID = "0000180d-0000-1000-8000-00805f9b34fb";
+    private static final String READ_UUID = "605f3659-d22a-4023-915c-54054bc84875";
 
     private static final int STATE_PER_SEC = 0;
     private static final int STATE_PER_MINUTE = 1;
@@ -151,6 +151,7 @@ public class DetailActivity extends AppCompatActivity {
                     btn_record.setText(R.string.stop);
                     sessionID = UUID.randomUUID().toString();
                     if(thisBLEDevice!=null){
+                        Log.d(TAG, "onClick: RECORD BUTTON CLICKED. LISTENING FOR INDICATE");
                             BleManager.getInstance().indicate(thisBLEDevice, SERVICE_UUID, READ_UUID, new BleIndicateCallback() {
                                 @Override
                                 public void onIndicateSuccess() {
@@ -289,7 +290,7 @@ public class DetailActivity extends AppCompatActivity {
             heartModel.setRaw_measurement(dataToInt);
             heartModel.setSession_id(sessionID);
             heartModel.setTime_ms(new Date().getTime());
-            heartModel.setDataType(MeasurementModel.SENSORS.HEART);
+            heartModel.setDataType(MeasurementModel.SENSORS.PULSE);
             AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
             addSensorMeasurement.execute(heartModel);
 
@@ -314,7 +315,7 @@ public class DetailActivity extends AppCompatActivity {
             heartModel.setRaw_measurement(dataToDouble);
             heartModel.setSession_id(sessionID);
             heartModel.setTime_ms(new Date().getTime());
-            heartModel.setDataType(MeasurementModel.SENSORS.HEART);
+            heartModel.setDataType(MeasurementModel.SENSORS.PULSE);
             AddSensorMeasurement addSensorMeasurement = new AddSensorMeasurement();
             addSensorMeasurement.execute(heartModel);
         }
@@ -373,7 +374,7 @@ public class DetailActivity extends AppCompatActivity {
         Boolean putSuccess = false;
         @Override
         protected Boolean doInBackground(MeasurementModel... models) {
-            DynamoDBAccess access = DynamoDBAccess.getInstance(getApplicationContext());
+            DynamoDBAccess access = DynamoDBAccess.getSensorInstance(getApplicationContext());
             try{
                 putSuccess = access.addNewMeasurement(models[0]);
             }catch (Exception e){

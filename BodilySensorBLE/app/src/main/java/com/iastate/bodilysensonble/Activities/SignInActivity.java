@@ -46,8 +46,13 @@ public class SignInActivity extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            Intent bleScanIntent = new Intent(getApplicationContext(), BLEScanActivity.class);
-                            startActivity(bleScanIntent);
+                            if(task.isSuccessful()){
+                                Intent bleScanIntent = new Intent(getApplicationContext(), BLEScanActivity.class);
+                                startActivity(bleScanIntent);
+                            }
+                           else{
+                               Toast.makeText(getApplicationContext(), task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }

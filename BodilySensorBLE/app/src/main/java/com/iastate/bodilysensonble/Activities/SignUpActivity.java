@@ -149,7 +149,7 @@ public class SignUpActivity extends AppCompatActivity {
         Boolean putSuccess = false;
         @Override
         protected Boolean doInBackground(Document... documents) {
-            DynamoDBAccess access = DynamoDBAccess.getInstance(getApplicationContext());
+            DynamoDBAccess access = DynamoDBAccess.getUserInstance(getApplicationContext());
             try{
                 putSuccess = access.putItem(documents[0]);
             }catch (Exception e){
