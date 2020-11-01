@@ -13,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 
 
 public class DynamoDBAccess {
-    private static final String IDENTITY_POOL_ID = "us-east-2:bf60357a-3165-4185-89f6-ece495de39d0";
+    private static final String IDENTITY_POOL_ID = "us-east-1:406ce4dd-3f73-4907-bf48-2950fb8a1fa9";
     private static final String SENSOR_DATA_TABLE = "sensor_data";
     private static final String USER_TABLE = "users";
     private static final int USER_INSTANCE = 0;
@@ -37,9 +37,9 @@ public class DynamoDBAccess {
     private static volatile DynamoDBAccess userInstance;
 
     private DynamoDBAccess(Context context, int type){
-        credentialProvider = new CognitoCachingCredentialsProvider(context, IDENTITY_POOL_ID, Regions.US_EAST_2);
+        credentialProvider = new CognitoCachingCredentialsProvider(context, IDENTITY_POOL_ID, Regions.US_EAST_1);
         dynamoDBClient = new AmazonDynamoDBClient(credentialProvider);
-        dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_2));
+        dynamoDBClient.setRegion(Region.getRegion(Regions.US_EAST_1));
         if(type==USER_INSTANCE)
             sensorDataTable = Table.loadTable(dynamoDBClient, USER_TABLE);
         else if(type==SENSOR_INSTANCE)

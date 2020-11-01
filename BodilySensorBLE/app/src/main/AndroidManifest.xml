@@ -17,16 +17,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SignUpActivity" android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".Activities.SignUpActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activities.BLEScanActivity" />
         <activity android:name=".Activities.DetailActivity" />
-        <activity android:name=".Activities.SignInActivity" android:windowSoftInputMode="stateHidden">
+        <activity
+            android:name=".Activities.SignInActivity"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".Helpers.NotificationHandler"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

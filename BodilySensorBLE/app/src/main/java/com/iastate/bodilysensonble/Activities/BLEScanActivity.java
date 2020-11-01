@@ -1,5 +1,6 @@
 package com.iastate.bodilysensonble.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -28,7 +29,13 @@ import com.clj.fastble.callback.BleGattCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
 import com.clj.fastble.exception.BleException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingRegistrar;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.iastate.bodilysensonble.Adapters.BluetoothListAdapter;
 import com.iastate.bodilysensonble.R;
 
@@ -53,6 +60,14 @@ public class BLEScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ble_scan);
 
         mAuth = FirebaseAuth.getInstance();
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                String token = task.getResult();
+                Log.d(TAG, "onComplete: Token: " + token);
+            }
+        });
 
         BleManager.getInstance().init(getApplication());
         BleManager.getInstance()
