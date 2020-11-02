@@ -11,113 +11,72 @@ import PostData from './post.json'
 export default class Home extends Component {
     constructor() {
         super();
-        this.state = { Email: 'Need To Change' };
-        this.pullingEmail = this.pullingEmail.bind(this)
-        this.pullingEmail()
-      }
+        this.state = { Email: 'Need To Change', patients: [], heartRate: [] };
+        this.pullingPatients = this.pullingPatients.bind(this)
+        this.pullingPatients()
+    }
 
 
-      async pullingEmail() {
-
+    async pullingPatients() {
         AWS.config.update({
-                    region: 'us-east-2',
-                    endpoint: 'dynamodb.us-east-2.amazonaws.com',
-                    accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
-                    secretAccessKey: '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'
-                });
-
+            region: 'us-east-2',
+            endpoint: 'dynamodb.us-east-2.amazonaws.com',
+            accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
+            secretAccessKey: '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'
+        });
         var docClient = new AWS.DynamoDB.DocumentClient();
-
-
-          try{
-            var params = {
-                TableName: 'users',
-                Key:{
-                    "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
+        var user = firebaseApp.auth().currentUser;
+        if (user) {
+            try {
+                var params = {
+                    TableName: 'users',
+                    Key: {
+                        "user_id": user.uid
+                    }
                 }
-            }; 
-            var result = await docClient.get(params).promise().then(result => this.setState({
-                Email: result.Item.email
-              }))
-          } catch (error) {
-              console.error(error);
-          }
-      }
-                // async getData() {
-                //     AWS.config.update({
-                //         region: 'us-east-2',
-                //         endpoint: 'dynamodb.us-east-2.amazonaws.com',
-                //         accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
-                //         secretAccessKey: '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'
-                //     });
-                
-                //     //this.dynamodb = new AWS.DynamoDB();
-                //     this.docClient = new AWS.DynamoDB.DocumentClient();
-                
-                //     var params = {
-                //         TableName: 'users',
-                //         Key:{
-                //             "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
-                //         }
-                //     };
-                        
-                //     var documentClient = new AWS.DynamoDB.DocumentClient();
-                //     var dataPulled;
-                //     this.setState({ Email: await documentClient.get(params, function(err, data) {
-                //         if (err){ 
-                            
-                //             dataPulled = "YOU F'ed Up";
-                //         }
-                //         else{
-                //             console.log(data.Item.email+" in Function");
-                //             // this.setState({ Email: data.Item.email });
-                //             dataPulled = "IT WORKED!";
-                //         }
-                //         }).Item.email})
-                // }
+                var fistName = await docClient.get(params).promise().then(result => this.setState({ Email: result.Item.first_name }))
+                var listPatients = await docClient.get(params).promise().then(result => this.setState({ patients: result.Item.test }))
+              this.state.patients.map(patient => docClient.get({
+                TableName: 'users',
+                Key: {
+                    "user_id": patient
+                }
+            }).promise().then(rates => this.setState({ heartRate: rates.Item.heart })))
+            //     var whatATest = await docClient.get({
+            //     TableName: 'users',
+            //     Key: {
+            //         "user_id": "testing"
+            //     }
+            // }).promise().then(results => this.setState({ heartRate: results.Item.heart }))
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
 
-
-
-            //   updateState(dataPassed) {
-            //     (async () => {
-            //        const data = await this.pull_data();
-            //        console.log(data);
-            //        return JSON.stringify(data);
-            //     })();
-            // }
-                
-            //   async pull_data(){
-            //     AWS.config.update({
-            //         region: 'us-east-2',
-            //         endpoint: 'dynamodb.us-east-2.amazonaws.com',
-            //         accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
-            //         secretAccessKey: '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'
-            //     });
-
-            //     //this.dynamodb = new AWS.DynamoDB();
-            //     this.docClient = new AWS.DynamoDB.DocumentClient();
-
-            //     var params = {
-            //         TableName: 'users',
-            //         Key:{
-            //             "user_id": 'EbGp7qwQWlfaRz2PD0X0iSL0ivl2'
-            //         }
-            //     };
-                    
-            //     var documentClient = new AWS.DynamoDB.DocumentClient();
-            //     var dataPulled;
-            //     var getting = documentClient.get(params, function(err, data) {
-            //         if (err){ 
-            //             dataPulled = "YOU F'ed Up";
-            //         }
-            //         else{
-            //             console.log(data.Item.email+" in Function");
-            //             //this.updateState(data);
-            //             dataPulled = "IT WORKED!";
-            //         }
-            //       }).promise;
-            //       return dataPulled;
-            //   }
+     getHeartRate() {
+        // AWS.config.update({
+        //     region: 'us-east-2',
+        //     endpoint: 'dynamodb.us-east-2.amazonaws.com',
+        //     accessKeyId: 'AKIAYPNA3BUHUHWK52FL',
+        //     secretAccessKey: '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'
+        // });
+        // var docClient = new AWS.DynamoDB.DocumentClient();
+        //     try {
+        //         var params = {
+        //             TableName: 'users',
+        //             Key: {
+        //                 "user_id": user_UID
+        //             }
+        //         };
+        //         var firstName = await docClient.get(params).promise().then(result => result.Item.first_name)
+        //         return firstName
+        //         //var heartRates = await docClient.get(params).promise().then(result => result.Item.heart_rate_info)
+        //     } catch (error) {
+        //         console.error(error);
+        //     }
+        this.setState({heartRate: [11,10]});
+    }
 
     render() {
 
@@ -129,13 +88,22 @@ export default class Home extends Component {
         //const dataReturned = this.state.Email;
         //console.log(toPrint);
 
-       
+
         if (user) {
-           
-              return (
+
+            return (
                 <div>
-                 I just need this to work {this.state.Email} sigh..
-                  </div>);
+                    <p>
+                        Welcome {this.state.Email}!</p>
+                    <p> Here is a list of your patients: {this.state.patients.map(patient => 
+                       // <p><Button onClick={this.getHeartRate()}>{patient
+                            <p><Button >{patient
+                        // this.getHeartRate(patient).map(rate => 
+                        //     <p>{rate}</p>)
+                        }</Button></p>)
+                    }</p>
+                    {this.state.heartRate.map(rate => <p>{rate}</p>)}
+                </div>);
         }
         else {
             return (
