@@ -162,7 +162,7 @@ class SignUpFormBase  extends Component {
  
 const SignUpLink = () => (
   <p>
-    Don't have an account? <li><Link class="showme" to={'/signup'}>Sign Up</Link></li>
+    Don't have an account? <Link to={'/signup'}>Sign Up</Link>
   </p>
 );
 
@@ -172,5 +172,4 @@ const SignUpForm = compose(
   )(SignUpFormBase);
 
 export default SignUpPage;
- 
 export { SignUpForm, SignUpLink };
