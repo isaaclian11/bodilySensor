@@ -32,10 +32,8 @@ import com.clj.fastble.exception.BleException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingRegistrar;
-import com.google.firebase.messaging.FirebaseMessagingService;
+
 import com.iastate.bodilysensonble.Adapters.BluetoothListAdapter;
 import com.iastate.bodilysensonble.R;
 
