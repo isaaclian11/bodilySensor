@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import * as AWS from 'aws-sdk';
+import firebaseApp from 'firebase/app';
 
  
 const SignUpPage = () => (
@@ -29,24 +30,27 @@ class SignUpFormBase  extends Component {
   onSubmit = event => {
     const { username, email, passwordOne } = this.state;
 
-    this.sendToAWS();   
 
+    var uid=""
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push('/Home');
+        uid = "NONSENSE";
+        this.sendToAWS(authUser.uid); 
       })
       .catch(error => {
         this.setState({ error });
       });
-     
- 
+console.log(uid)
+  
     event.preventDefault();
   };
 
-  sendToAWS = () =>{
-
+  async sendToAWS(uid) {
+    console.log(uid);
+    var user = firebaseApp.auth().currentUser;
     AWS.config.update({
       region: 'us-east-2',
       endpoint: 'dynamodb.us-east-2.amazonaws.com',
@@ -58,7 +62,7 @@ class SignUpFormBase  extends Component {
     var params = {
       TableName: 'users',
       Item: {
-        'user_id' : this.state.username, //update to firebase userid
+        'user_id' : this.uid, //update to firebase userid
         'email' : this.state.email,
         'first_name' : this.state.firstname,
         'last_name' : this.state.lastname,
@@ -67,7 +71,7 @@ class SignUpFormBase  extends Component {
         
       }
     };
-    documentClient.put(params, function(err, data) {
+    await documentClient.put(params, function(err, data) {
       if (err) {
         console.log("Error", err);
       } else {
@@ -162,7 +166,7 @@ class SignUpFormBase  extends Component {
  
 const SignUpLink = () => (
   <p>
-    Don't have an account? <li><Link class="showme" to={'/signup'}>Sign Up</Link></li>
+    Don't have an account? <Link to={'/signup'}>Sign Up</Link>
   </p>
 );
 
@@ -172,5 +176,4 @@ const SignUpForm = compose(
   )(SignUpFormBase);
 
 export default SignUpPage;
- 
 export { SignUpForm, SignUpLink };

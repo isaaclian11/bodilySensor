@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Button, Jumbotron } from 'react-bootstrap';
 import './Home.css';
+import { Link } from 'react-router-dom';
 import firebaseApp from 'firebase/app';
 import 'firebase/auth';
 import * as AWS from 'aws-sdk';
@@ -11,7 +12,7 @@ import PostData from './post.json'
 export default class Home extends Component {
     constructor() {
         super();
-        this.state = { Email: 'Need To Change', patients: [], heartRate: [] };
+        this.state = { Email: 'Need To Change', patients: [], heartRate: [], userUpdated: false };
         this.pullingPatients = this.pullingPatients.bind(this)
         this.pullingPatients()
     }
@@ -34,14 +35,15 @@ export default class Home extends Component {
                         "user_id": user.uid
                     }
                 }
-                var fistName = await docClient.get(params).promise().then(result => this.setState({ Email: result.Item.first_name }))
-                var listPatients = await docClient.get(params).promise().then(result => this.setState({ patients: result.Item.test }))
-              this.state.patients.map(patient => docClient.get({
-                TableName: 'users',
-                Key: {
-                    "user_id": patient
-                }
-            }).promise().then(rates => this.setState({ heartRate: rates.Item.heart })))
+                console.log(user.uid)
+                await docClient.get(params).promise().then(result => this.setState({ Email: result.Item.first_name }))
+                await docClient.get(params).promise().then(result => this.setState({ patients: result.Item.patients }))
+            //   this.state.patients.map(patient => docClient.get({
+            //     TableName: 'users',
+            //     Key: {
+            //         "user_id": patient
+            //     }
+            // }).promise().then(rates => this.setState({ heartRate: rates.Item.heart })))
             //     var whatATest = await docClient.get({
             //     TableName: 'users',
             //     Key: {
@@ -79,7 +81,11 @@ export default class Home extends Component {
     }
 
     render() {
-
+        // if(this.state.userUpdated === false){
+        //     const user = firebaseApp.auth().currentUser;
+        //     this.setState({Email: user.fistName})
+        //     this.setState({userUpdated: true})
+        // }
 
         //firebaseApp.auth().setPersistence(firebaseApp.auth.Auth.Persistence.SESSION)
         const user = firebaseApp.auth().currentUser;
@@ -96,13 +102,12 @@ export default class Home extends Component {
                     <p>
                         Welcome {this.state.Email}!</p>
                     <p> Here is a list of your patients: {this.state.patients.map(patient => 
-                       // <p><Button onClick={this.getHeartRate()}>{patient
-                            <p><Button >{patient
-                        // this.getHeartRate(patient).map(rate => 
-                        //     <p>{rate}</p>)
-                        }</Button></p>)
+                            <p><Link to={{
+                                pathname: '/Patient',
+                                state: { patientID: {patient} }
+                              }}> {patient} </Link></p>)
                     }</p>
-                    {this.state.heartRate.map(rate => <p>{rate}</p>)}
+                    {/* {this.state.heartRate.map(rate => <p>{rate}</p>)} */}
                 </div>);
         }
         else {
